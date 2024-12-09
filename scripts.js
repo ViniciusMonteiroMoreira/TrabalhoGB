@@ -7,7 +7,10 @@ let minhalista = []
 
 
 function adicionartarefa() {
-    minhalista.push(input.value)
+    minhalista.push({
+        tarefa: input.value,
+        finalizada: false
+    })
     input.value=''
     mostrartarefas()
 }
@@ -19,9 +22,9 @@ function mostrartarefas() {
     minhalista.forEach((item,posicao) => {
 
         novaLi = novaLi + `
-            <li class="tarefa">
-                <img src="./img/Check.png" alt="approve-task">
-                <p>${item}</p>
+            <li class="tarefa ${item.finalizada && "feito"}">
+                <img src="./img/Check.png" alt="approve-task" onclick="finalizartarefa(${posicao})">
+                <p>${item.tarefa}</p>
                 <img src="./img/Trash Icon.png" alt="delete-task" onclick ="deletartarefa(${posicao})">
             </li>
             `
@@ -29,10 +32,13 @@ function mostrartarefas() {
     
 listacompleta.innerHTML = novaLi
 
+localStorage.setItem('lista',JSON.stringify(minhalista))
+
 }
 
-function finalizartarefa(){
-    
+function finalizartarefa (posicao){
+    minhalista[posicao].finalizada = !minhalista[posicao].finalizada
+    mostrartarefas()
 }
 
 function deletartarefa (posicao) {
@@ -40,5 +46,14 @@ function deletartarefa (posicao) {
     mostrartarefas()
 }
 
+function recarregaritems(){
+    const tarefalocalstorage = localStorage.getItem('lista')
+    if(tarefalocalstorage){
+        minhalista = JSON.parse(tarefalocalstorage) 
+    }
+    mostrartarefas()
+}
+
+recarregaritems()
 
 button.addEventListener('click',adicionartarefa)

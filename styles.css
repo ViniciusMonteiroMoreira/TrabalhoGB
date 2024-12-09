@@ -81,3 +81,8 @@ img {
 .tarefa:hover img{
     opacity: 1;
 }
+
+.feito{
+    background-color: #8fac55;
+    text-decoration: line-through;
+}
